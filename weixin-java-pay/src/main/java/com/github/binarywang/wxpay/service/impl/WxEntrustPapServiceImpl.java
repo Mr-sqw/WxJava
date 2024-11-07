@@ -1,5 +1,7 @@
 package com.github.binarywang.wxpay.service.impl;
 
+import com.github.binarywang.wxpay.bean.notify.SignatureHeader;
+import com.github.binarywang.wxpay.bean.notify.WxSignStatusNotifyV3Result;
 import com.github.binarywang.wxpay.bean.request.*;
 import com.github.binarywang.wxpay.bean.result.*;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
@@ -7,6 +9,8 @@ import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxEntrustPapService;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.binarywang.wxpay.util.SignUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.util.json.WxGsonBuilder;
@@ -20,6 +24,8 @@ import java.net.URLEncoder;
 @Slf4j
 @RequiredArgsConstructor
 public class WxEntrustPapServiceImpl implements WxEntrustPapService {
+
+  private static final Gson GSON = new GsonBuilder().create();
 
   private final WxPayService payService;
 
@@ -43,6 +49,13 @@ public class WxEntrustPapServiceImpl implements WxEntrustPapService {
     wxMaEntrustRequest.checkAndSign(payService.getConfig());
     wxMaEntrustRequest.setNotifyUrl(URLEncoder.encode(wxMaEntrustRequest.getNotifyUrl()));
     return wxMaEntrustRequest.toString();
+  }
+
+  @Override
+  public WxMaEntrustV3Result maSignV3(WxMaEntrustV3Request request) throws WxPayException {
+    String url = payService.getPayBaseUrl() + "/v3/papay/scheduled-deduct-sign/contracts/pre-entrust-sign/mini-program";
+    String response = payService.postV3(url, GSON.toJson(request));
+    return GSON.fromJson(response, WxMaEntrustV3Result.class);
   }
 
   @Override
@@ -102,6 +115,13 @@ public class WxEntrustPapServiceImpl implements WxEntrustPapService {
   }
 
   @Override
+  public WxWithholdV3Result withholdV3(WxWithholdV3Request request) throws WxPayException {
+    String url = payService.getPayBaseUrl() + "/v3/papay/pay/transactions/apply";
+    String response = payService.postV3(url, GSON.toJson(request));
+    return GSON.fromJson(response, WxWithholdV3Result.class);
+  }
+
+  @Override
   public WxPayCommonResult withholdPartner(WxWithholdRequest wxWithholdRequest) throws WxPayException {
     wxWithholdRequest.checkAndSign(payService.getConfig());
     String url = payService.getPayBaseUrl() + "/pay/partner/pappayapply";
@@ -120,6 +140,22 @@ public class WxEntrustPapServiceImpl implements WxEntrustPapService {
   }
 
   @Override
+  public WxPreWithholdV3Result preWithholdV3(String contractId, WxPreWithholdV3Request request) throws WxPayException {
+    String url = payService.getPayBaseUrl() + "/v3/papay/pay/schedules/contract-id/%s/schedule";
+    url = String.format(url, contractId);
+    String response = payService.postV3(url, GSON.toJson(request));
+    return GSON.fromJson(response, WxPreWithholdV3Result.class);
+  }
+
+  @Override
+  public WxPreWithholdV3Result queryPreWithholdV3(String contractId) throws WxPayException {
+    String url = payService.getPayBaseUrl() + "/v3/papay/pay/schedules/contract-id/%s";
+    url = String.format(url, contractId);
+    String response = payService.getV3(url);
+    return GSON.fromJson(response, WxPreWithholdV3Result.class);
+  }
+
+  @Override
   public WxSignQueryResult querySign(WxSignQueryRequest wxSignQueryRequest) throws WxPayException {
     wxSignQueryRequest.checkAndSign(payService.getConfig());
     String url = payService.getPayBaseUrl() + "/papay/querycontract";
@@ -130,6 +166,14 @@ public class WxEntrustPapServiceImpl implements WxEntrustPapService {
   }
 
   @Override
+  public WxSignContractV3 querySignV3(Integer planId, String outContractCode) throws WxPayException {
+    String url = payService.getPayBaseUrl() + "/v3/papay/sign/contracts/plan-id/%s/out-contract-code/%s";
+    url = String.format(url, planId, outContractCode);
+    String response = payService.getV3(url);
+    return GSON.fromJson(response, WxSignContractV3.class);
+  }
+
+  @Override
   public WxTerminationContractResult terminationContract(WxTerminatedContractRequest wxTerminatedContractRequest) throws WxPayException {
     wxTerminatedContractRequest.checkAndSign(payService.getConfig());
     String url = payService.getPayBaseUrl() + "/papay/deletecontract";
@@ -137,6 +181,19 @@ public class WxEntrustPapServiceImpl implements WxEntrustPapService {
     WxTerminationContractResult terminationContractResult = BaseWxPayResult.fromXML(responseContent, WxTerminationContractResult.class);
     terminationContractResult.checkResult(payService, wxTerminatedContractRequest.getSignType(), true);
     return terminationContractResult;
+  }
+
+  @Override
+  public WxSignContractV3 terminationContractV3(Integer planId, String outContractCode, WxTerminatedContractV3Request request) throws WxPayException {
+    String url = payService.getPayBaseUrl() + "/v3/papay/sign/contracts/plan-id/%s/out-contract-code/%s/terminate";
+    url = String.format(url, planId, outContractCode);
+    String response = payService.postV3(url, GSON.toJson(request));
+    return GSON.fromJson(response, WxSignContractV3.class);
+  }
+
+  @Override
+  public WxSignStatusNotifyV3Result parseSignStatusNotifyV3Result(String notifyData, SignatureHeader header) throws WxPayException {
+    return payService.baseParseOrderNotifyV3Result(notifyData, header, WxSignStatusNotifyV3Result.class, WxSignContractV3.class);
   }
 
   @Override

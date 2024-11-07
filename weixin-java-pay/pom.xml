@@ -10,6 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>weixin-java-pay</artifactId>
+  <version>${weixin-java-pay.version}</version>
   <name>WxJava - PAY Java SDK</name>
   <description>微信支付 Java SDK</description>
 
@@ -17,7 +18,8 @@
     <dependency>
       <groupId>com.github.binarywang</groupId>
       <artifactId>weixin-java-common</artifactId>
-      <version>${project.version}</version>
+      <!--<version>${project.version}</version>-->
+      <version>${weixin-java-common.version}</version>
     </dependency>
     <dependency>
       <groupId>com.github.binarywang</groupId>
