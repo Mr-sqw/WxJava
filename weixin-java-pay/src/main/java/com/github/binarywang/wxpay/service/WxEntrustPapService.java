@@ -4,6 +4,7 @@ import com.github.binarywang.wxpay.bean.notify.SignatureHeader;
 import com.github.binarywang.wxpay.bean.notify.WxSignStatusNotifyV3Result;
 import com.github.binarywang.wxpay.bean.request.*;
 import com.github.binarywang.wxpay.bean.result.*;
+import com.github.binarywang.wxpay.bean.result.enums.SignTypeEnum;
 import com.github.binarywang.wxpay.exception.WxPayException;
 
 /**
@@ -44,34 +45,32 @@ public interface WxEntrustPapService {
   String maSign(WxMaEntrustRequest wxMaEntrustRequest) throws WxPayException;
 
   /**
-   * 直连商户小程序场景预约扣费类型签约的预签约
-   * <pre>
-   *   商户可调用本接口预先指定签约信息，生成预签约会话及对应的预签约ID，再携带预签约ID（pre_entrustweb_id）参数，通过小程序跳转参数调用navigateToMiniProgram跳转至微信支付的页面。跳转流程可参考唤起小程序签约API。用户可在微信支付客户端内的完成签约。
-   *   若用户同意本次流程，则微信支付会通过商户指定的回调地址通知签约结果；若用户未同意或者流程执行失败，则不通知签约结果。
-   *   商户签约协议号在进行签约后不能在重复使用，包括用户确认签约后因业务规则限制没有完成签约的协议、签约成功后已经解约的协议及签约成功生效中的协议。商户可通过查询协议接口确认商户侧协议号是否已经使用。
-   *
-   *   注意：商户获取的签约会话有效期为10分钟。
-   *
-   *   详见：<a href="https://pay.weixin.qq.com/docs/merchant/apis/entrusted-payment/normal/mini-program-scheduled-deduct-pre-sign.html">https://pay.weixin.qq.com/docs/merchant/apis/entrusted-payment/normal/mini-program-scheduled-deduct-pre-sign.html</a>
-   * </pre>
-   *
-   * @param request
-   * @throws WxPayException
-   */
-  WxMaEntrustV3Result maSignV3(WxMaEntrustV3Request request) throws WxPayException;
-
-  /**
    * <pre>
    *   获取h5纯签约支付跳转链接
    *   详见：<a href="https://pay.weixin.qq.com/wiki/doc/api/wxpay_v2/papay/chapter3_4.shtml">https://pay.weixin.qq.com/wiki/doc/api/wxpay_v2/papay/chapter3_4.shtml</a>
    *   返回一个签约链接  在浏览器请求链接拉起微信
    * </pre>
    *
-   * @param wxH5EntrustRequest the wx h 5 entrust request
-   * @return wx h 5 entrust result
+   * @param wxH5EntrustRequest the wx h5 entrust request
+   * @return wx h5 entrust result
    * @throws WxPayException the wx pay exception
    */
   WxH5EntrustResult h5Sign(WxH5EntrustRequest wxH5EntrustRequest) throws WxPayException;
+
+  /**
+   * 直连商户预约扣费类型签约的预签约
+   * <pre>
+   *   <a href="https://pay.weixin.qq.com/docs/merchant/apis/entrusted-payment/normal/normal-app-scheduled-deduct-pre-sign.html">直连商户App场景预约扣费类型签约的预签约API</a>
+   *   <a href="https://pay.weixin.qq.com/docs/merchant/apis/entrusted-payment/normal/jsapi-scheduled-deduct-pre-sign.html">直连商户JSAPI场景预约扣费类型签约的预签约API</a>
+   *   <a href="https://pay.weixin.qq.com/docs/merchant/apis/entrusted-payment/normal/mini-program-scheduled-deduct-pre-sign.html">直连商户小程序场景预约扣费类型签约的预签约API</a>
+   *   <a href="https://pay.weixin.qq.com/docs/merchant/apis/entrusted-payment/normal/normal-h5-scheduled-deduct-pre-sign.html">直连商户H5场景预约扣费类型签约的预签约API</a>
+   * </pre>
+   *
+   * @param signType
+   * @param request
+   * @throws WxPayException
+   */
+  WxPreSignV3Result preSignV3(SignTypeEnum signType, WxPreSignV3Request request) throws WxPayException;
 
   /**
    * <pre>

@@ -10,12 +10,12 @@ import me.chanjar.weixin.common.annotation.Required;
  * @author suqianwen
  * created on  2024-11-03 5:24 下午
  * <pre>
- *   直连商户小程序场景预约扣费类型签约的预签约 请求参数
+ *   直连商户预约扣费类型签约的预签约 请求参数
  * </pre>
  */
 @Data
 @NoArgsConstructor
-public class WxMaEntrustV3Request {
+public class WxPreSignV3Request {
 
   /**
    * <pre>
@@ -98,8 +98,19 @@ public class WxMaEntrustV3Request {
   private DeductSchedule deductSchedule;
 
   /**
+   * <pre>
+   * 【跳转控制信息】 目前仅在H5签约场景生效。指定相关参数，可控制签约完成后跳转的路径。
+   * 选填
+   * </pre>
+   */
+  @SerializedName("jump_control")
+  private JumpControl jumpControl;
+
+  /**
    * 【用于预约扣费的预约信息】 用于预约扣费的预约信息，在使用预约扣费类型的模板进行预签约时，该值必填。
    */
+  @Data
+  @NoArgsConstructor
   public static class DeductSchedule {
 
     /**
@@ -130,6 +141,25 @@ public class WxMaEntrustV3Request {
      */
     @SerializedName("description")
     private String description;
+
+  }
+
+  /**
+   * 【跳转控制信息】 目前仅在H5签约场景生效。指定相关参数，可控制签约完成后跳转的路径。
+   */
+  @Data
+  @NoArgsConstructor
+  public static class JumpControl {
+
+    /**
+     * <pre>
+     * 【跳转的应用AppID】 仅H5签约场景生效。当商户已经申请H5签约完成后返回App的权限且指定跳转的应用AppID，签约完成后将返回该AppID对应的App应用。如果不填且签约发起时的来源UA可被微信识别，则跳转到UA对应的App应用，否则留在微信。识别UA并进行跳转的功能仅需绑定UA与回跳应用关系，无需申请跳转权限。申请跳转权限、绑定AppID与回跳应用关系、绑定UA与回跳应用关系的流程可参考指引文档中的接入前准备部分。
+     * 选填
+     * string
+     * </pre>
+     */
+    @SerializedName("jump_appid")
+    private String jumpAppid;
 
   }
 

@@ -4,6 +4,7 @@ import com.github.binarywang.wxpay.bean.notify.SignatureHeader;
 import com.github.binarywang.wxpay.bean.notify.WxSignStatusNotifyV3Result;
 import com.github.binarywang.wxpay.bean.request.*;
 import com.github.binarywang.wxpay.bean.result.*;
+import com.github.binarywang.wxpay.bean.result.enums.SignTypeEnum;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxEntrustPapService;
@@ -52,13 +53,6 @@ public class WxEntrustPapServiceImpl implements WxEntrustPapService {
   }
 
   @Override
-  public WxMaEntrustV3Result maSignV3(WxMaEntrustV3Request request) throws WxPayException {
-    String url = payService.getPayBaseUrl() + "/v3/papay/scheduled-deduct-sign/contracts/pre-entrust-sign/mini-program";
-    String response = payService.postV3(url, GSON.toJson(request));
-    return GSON.fromJson(response, WxMaEntrustV3Result.class);
-  }
-
-  @Override
   public WxH5EntrustResult h5Sign(WxH5EntrustRequest wxH5EntrustRequest) throws WxPayException {
     wxH5EntrustRequest.checkAndSign(payService.getConfig());
     // 微信最新接口signType不能参与签名，否则报错：签约参数签名校验错误
@@ -90,6 +84,13 @@ public class WxEntrustPapServiceImpl implements WxEntrustPapService {
     WxH5EntrustResult result = BaseWxPayResult.fromXML(responseContent, WxH5EntrustResult.class);
     result.checkResult(payService, wxH5EntrustRequest.getSignType(), true);
     return result;
+  }
+
+  @Override
+  public WxPreSignV3Result preSignV3(SignTypeEnum signType, WxPreSignV3Request request) throws WxPayException {
+    String url = payService.getPayBaseUrl() + signType.getBaseUrl();
+    String response = payService.postV3(url, GSON.toJson(request));
+    return GSON.fromJson(response, WxPreSignV3Result.class);
   }
 
   @Override
