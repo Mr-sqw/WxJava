@@ -337,15 +337,78 @@
     </dependencies>
   </dependencyManagement>
 
+  <!-- 拉取配置 -->
+  <!-- 使用 huawei / aliyun 的 Maven 源，提升下载速度 -->
+  <repositories>
+    <!-- 阿里云maven私服 -->
+    <repository>
+      <!-- pom.xml中的project.repositories.repository.id 与 settings.xml中的settings.servers.server.id必须匹配 -->
+      <id>repo_sqw</id>
+      <url>https://packages.aliyun.com/63e3be5c03f4bf9a6e5f41be/maven/repo_sqw</url>
+      <!-- 若您的制品库仅存储 release 制品，可将<snapshot></snapshot>节点更改为 false。 -->
+      <!-- 若您的制品库仅存储 snapshot 制品，可将<release></release>节点更改为 false。 -->
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+
+    <!-- maven官方仓库镜像库，加速拉取maven官方仓库制品 -->
+    <!-- 阿里云maven中央仓库 -->
+    <repository>
+      <id>aliyunmaven</id>
+      <name>aliyun</name>
+      <url>https://maven.aliyun.com/repository/public</url>
+    </repository>
+    <!-- 华为云maven中央仓库 -->
+    <repository>
+      <id>huaweicloud</id>
+      <name>huawei</name>
+      <url>https://mirrors.huaweicloud.com/repository/maven/</url>
+    </repository>
+
+    <repository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>spring-snapshots</id>
+      <name>Spring Snapshots</name>
+      <url>https://repo.spring.io/snapshot</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
+
+  <!-- 推送配置 -->
   <distributionManagement>
-    <snapshotRepository>
+    <!--<snapshotRepository>
       <id>ossrh</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
     <repository>
       <id>ossrh</id>
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>-->
+
+    <!-- 发布正式版本的仓库 -->
+    <repository>
+      <!-- pom.xml中的project.distributionManagement.repository.id 与 settings.xml中的settings.servers.server.id必须匹配 -->
+      <id>repo_sqw</id>
+      <url>https://packages.aliyun.com/63e3be5c03f4bf9a6e5f41be/maven/repo_sqw</url>
     </repository>
+    <!-- 发布快照版本的仓库 -->
+    <snapshotRepository>
+      <id>repo_sqw</id>
+      <url>https://packages.aliyun.com/63e3be5c03f4bf9a6e5f41be/maven/repo_sqw</url>
+    </snapshotRepository>
   </distributionManagement>
 
   <profiles>
