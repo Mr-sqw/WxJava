@@ -14,6 +14,12 @@
   <name>WxJava - PAY Java SDK</name>
   <description>微信支付 Java SDK</description>
 
+  <properties>
+    <wx-java.version>4.6.6.B</wx-java.version>
+    <weixin-java-common.version>4.6.6.B</weixin-java-common.version>
+    <weixin-java-pay.version>4.6.7-sqw-SNAPSHOT</weixin-java-pay.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.github.binarywang</groupId>
