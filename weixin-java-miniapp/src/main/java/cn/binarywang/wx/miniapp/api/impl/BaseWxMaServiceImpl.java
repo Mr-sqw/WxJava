@@ -346,7 +346,7 @@ public abstract class BaseWxMaServiceImpl<H, P> implements WxMaService, RequestH
     if (data instanceof String) {
       dataForLog = DataUtils.handleDataWithSecret((String) data);
     } else {
-      dataForLog = data.toString();
+      dataForLog = data == null ? null : data.toString();
     }
     return excuteWithRetry(
         (uriWithAccessToken) -> executor.execute(uriWithAccessToken, data, WxType.MiniApp),
