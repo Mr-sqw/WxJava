@@ -9,14 +9,21 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>wx-java-miniapp-spring-boot-starter</artifactId>
+  <version>${wx-java-miniapp-spring-boot-starter.version}</version>
   <name>WxJava - Spring Boot Starter for MiniApp</name>
   <description>微信小程序开发的 Spring Boot Starter</description>
+
+  <properties>
+    <wx-java-miniapp-spring-boot-starter.version>4.6.7-sqw-SNAPSHOT</wx-java-miniapp-spring-boot-starter.version>
+    <weixin-java-miniapp.version>4.6.7-sqw-SNAPSHOT</weixin-java-miniapp.version>
+  </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.github.binarywang</groupId>
       <artifactId>weixin-java-miniapp</artifactId>
-      <version>${project.version}</version>
+      <!--<version>${project.version}</version>-->
+      <version>${weixin-java-miniapp.version}</version>
     </dependency>
     <dependency>
       <groupId>redis.clients</groupId>
