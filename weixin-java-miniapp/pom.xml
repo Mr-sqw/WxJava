@@ -16,6 +16,7 @@
   <description>微信小程序 Java SDK</description>
 
   <properties>
+    <weixin-java-common.version>4.6.6.B</weixin-java-common.version>
     <weixin-java-miniapp.version>4.6.7-sqw-SNAPSHOT</weixin-java-miniapp.version>
   </properties>
 
@@ -23,7 +24,8 @@
     <dependency>
       <groupId>com.github.binarywang</groupId>
       <artifactId>weixin-java-common</artifactId>
-      <version>${project.version}</version>
+      <!--<version>${project.version}</version>-->
+      <version>${weixin-java-common.version}</version>
     </dependency>
 
     <dependency>
