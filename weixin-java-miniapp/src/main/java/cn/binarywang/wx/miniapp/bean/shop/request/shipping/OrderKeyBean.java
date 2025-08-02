@@ -1,10 +1,7 @@
 package cn.binarywang.wx.miniapp.bean.shop.request.shipping;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -22,7 +19,7 @@ public class OrderKeyBean implements Serializable {
 
   /**
    * 必填
-   * 订单单号类型，用于确认需要上传详情的订单。枚举值1，使用下单商户号和商户侧单号；枚举值2，使用微信支付单号。
+   * 订单单号类型，用于确认需要上传详情的订单。枚举值1，使用下单商户号和商户侧单号；枚举值2，使用微信支付单号。见枚举{@link OrderNumberTypeEnum}
    */
   @SerializedName("order_number_type")
   private int orderNumberType;
@@ -41,4 +38,38 @@ public class OrderKeyBean implements Serializable {
    */
   @SerializedName("out_trade_no")
   private String outTradeNo;
+
+  public OrderKeyBean(String transactionId) {
+    this.orderNumberType = OrderNumberTypeEnum.TRANSACTION_ID.getCode();
+    this.transactionId = transactionId;
+  }
+
+  public OrderKeyBean(String mchId, String outTradeNo) {
+    this.orderNumberType = OrderNumberTypeEnum.OUT_TRADE_NO.getCode();
+    this.mchId = mchId;
+    this.outTradeNo = outTradeNo;
+  }
+
+  @RequiredArgsConstructor
+  @Getter
+  public enum OrderNumberTypeEnum {
+
+    /**
+     * 商户号+商户侧单号
+     */
+    OUT_TRADE_NO(1, "商户号+商户侧单号"),
+
+    /**
+     * 微信支付订单号
+     */
+    TRANSACTION_ID(2, "微信支付订单号"),
+
+    ;
+
+    private final Integer code;
+
+    private final String desc;
+
+  }
+
 }

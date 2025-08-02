@@ -1,10 +1,7 @@
 package cn.binarywang.wx.miniapp.bean.shop.request.shipping;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -30,14 +27,14 @@ public class WxMaOrderShippingInfoUploadRequest implements Serializable {
 
   /**
    * 必填
-   * 物流模式，发货方式枚举值：1、实体物流配送采用快递公司进行实体物流配送形式 2、同城配送 3、虚拟商品，虚拟商品，例如话费充值，点卡等，无实体配送形式 4、用户自提
+   * 物流模式，发货方式枚举值：1、实体物流配送采用快递公司进行实体物流配送形式 2、同城配送 3、虚拟商品，虚拟商品，例如话费充值，点卡等，无实体配送形式 4、用户自提。见枚举{@link LogisticsTypeEnum}
    */
   @SerializedName("logistics_type")
   private int logisticsType;
 
   /**
    * 必填
-   * 发货模式，发货模式枚举值：1、UNIFIED_DELIVERY（统一发货）2、SPLIT_DELIVERY（分拆发货）
+   * 发货模式，发货模式枚举值：1、UNIFIED_DELIVERY（统一发货）2、SPLIT_DELIVERY（分拆发货）。见枚举{@link DeliveryModeEnum}
    * 示例值: UNIFIED_DELIVERY
    */
   @SerializedName("delivery_mode")
@@ -70,5 +67,61 @@ public class WxMaOrderShippingInfoUploadRequest implements Serializable {
    */
   @SerializedName("payer")
   private PayerBean payer;
+
+  //
+
+  @RequiredArgsConstructor
+  @Getter
+  public enum LogisticsTypeEnum {
+
+    /**
+     * 实体物流配送采用快递公司进行实体物流配送形式
+     */
+    ENTITY_LOGISTICS(1, "实体物流配送采用快递公司进行实体物流配送形式"),
+
+    /**
+     * 同城配送
+     */
+    CITY_DELIVERY(2, "同城配送"),
+
+    /**
+     * 虚拟商品，虚拟商品，例如话费充值，点卡等，无实体配送形式
+     */
+    VIRTUAL_PRODUCT(3, "虚拟商品"),
+
+    /**
+     * 用户自提
+     */
+    SELF_PICKUP(4, "用户自提"),
+
+    ;
+
+    private final Integer code;
+
+    private final String desc;
+
+  }
+
+  @RequiredArgsConstructor
+  @Getter
+  public enum DeliveryModeEnum {
+
+    /**
+     * 统一发货
+     */
+    UNIFIED_DELIVERY(1, "统一发货"),
+
+    /**
+     * 分拆发货
+     */
+    SPLIT_DELIVERY(2, "分拆发货"),
+
+    ;
+
+    private final Integer code;
+
+    private final String desc;
+
+  }
 
 }
