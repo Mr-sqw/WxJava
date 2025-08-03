@@ -8,6 +8,8 @@ import cn.binarywang.wx.miniapp.bean.shop.response.WxMaOrderShippingIsTradeManag
 import me.chanjar.weixin.common.error.WxErrorException;
 
 /**
+ * <a href="https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/order-shipping/order-shipping.html">小程序发货信息管理服务</a>
+ *
  * @author xzh
  * created on  2023/5/17 16:49
  */

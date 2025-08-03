@@ -138,6 +138,8 @@
     <httpclient.version>4.5.13</httpclient.version>
     <jetty.version>9.4.56.v20240826</jetty.version>
     <!-- 这个不能用10以上的版本，不支持jdk8-->
+
+    <weixin-java-common.version>4.6.7-sqw-SNAPSHOT</weixin-java-common.version>
   </properties>
 
   <dependencyManagement>

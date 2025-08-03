@@ -10,6 +10,7 @@
   </parent>
 
   <artifactId>weixin-java-common</artifactId>
+  <version>${weixin-java-common.version}</version>
   <name>WxJava - Common Java SDK</name>
   <description>微信开发Java SDK公共模块</description>
 

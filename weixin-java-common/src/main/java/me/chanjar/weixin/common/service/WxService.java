@@ -5,6 +5,10 @@ import me.chanjar.weixin.common.bean.CommonUploadParam;
 import me.chanjar.weixin.common.bean.ToJson;
 import me.chanjar.weixin.common.error.WxErrorException;
 
+import java.util.function.Function;
+
+import static me.chanjar.weixin.common.error.WxMpErrorMsgEnum.CODE_0;
+
 /**
  * 微信服务接口.
  *
@@ -71,4 +75,17 @@ public interface WxService {
    * @throws WxErrorException 异常
    */
   String upload(String url, CommonUploadParam param) throws WxErrorException;
+
+  static boolean isSuccess(int errCode) {
+    return errCode == CODE_0.getCode();
+  }
+
+  static <R> boolean isSuccess(R resp, Function<R, Integer> errCodeGetter) {
+    Integer errCode;
+    if (resp == null || errCodeGetter == null || (errCode = errCodeGetter.apply(resp)) == null) {
+      return false;
+    }
+    return isSuccess(errCode);
+  }
+
 }
